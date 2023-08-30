@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('community_service', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamps();
+            $table->unsignedBigInteger('ser_id');
+            $table->foreign('ser_id')->references('id')->on('services')->onDelete('cascade');
+            $table->unsignedBigInteger('com_id');
+            $table->foreign('com_id')->references('id')->on('community')->onDelete('cascade');
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('community_service');
     }
 };
