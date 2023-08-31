@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Http\Controllers\Auth;
+use App\Models\Category;
 
 class BlogController extends Controller
 {
@@ -12,7 +13,7 @@ class BlogController extends Controller
         return response(Blog::all(),200);
     }
 
-    public function add(Request $request)
+    public function add(Request $request, $id)
     {
         try{
             $ValidateData=$request->validate([
@@ -27,7 +28,8 @@ class BlogController extends Controller
                 'Content' => $request->input('Content'),
                 'Description' => $request->input('Description'),
  //               'user_id' => Auth::id(), // Assuming you're using Laravel's built-in authentication, required syntax
-                'user_id' => 1
+                'user_id' => 1,
+                'category_id'=> $id
             ]);
             $blog->save();
             return response()->json(['message' => 'Blog Added successfully'],200);
@@ -66,6 +68,15 @@ class BlogController extends Controller
         $blog->delete();
 
         return response()->json(['message' => 'Blog Deleted successfully'],200);
+    }
+
+    public function showbyCategory($id)
+    {
+        $category = Category::find($id); // Replace $categoryId with the actual category ID
+
+        $blogs = $category->blogs;
+
+        return response()->json($blogs);
     }
 
 }
