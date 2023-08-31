@@ -13,6 +13,8 @@ class AccessControl extends Model
     protected $connection = "pgsql";
     protected $table = "access_control";
 
+    protected $with = ["userAccessControls"];
+
     protected $fillable = ["id","name","description","created_at","updated_at"];
 
     public function userAccessControls(): HasMany

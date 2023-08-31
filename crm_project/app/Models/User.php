@@ -12,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use \Laravel\Passport\HasApiTokens, HasFactory, Notifiable;
 
     protected $connection = "pgsql";
 
@@ -32,7 +32,7 @@ class User extends Authenticatable
         "bio",
         "description",
         'password',
-        "is_locked",
+       // "is_locked",
         "role_id"
     ];
 

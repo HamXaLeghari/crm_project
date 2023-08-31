@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use function Symfony\Component\String\u;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,6 +28,25 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Gate::define("verify-role",function (User $user,$roles){
+
+            $roles = is_array($roles) ? $roles : [$roles];
+           return $user->role()->whereIn("name",$roles)->exists();
+            /*return $user
+                ->role()
+                ->where("name","=",$role)
+                ->exists();*/
+        });
+
+        Gate::define("verify-access",function (User $user, string $access_control){
+
+            return $user
+                ->userAccessControls()
+                ->getRelation("access_control")
+                ->where("name","=",$access_control)
+                ->exists();
+        });
 
         //
     }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccessControl;
-use App\Models\Role;
+
+use App\Models\UserAccessControl;
 use Exception;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -12,7 +14,6 @@ use Illuminate\Validation\ValidationException;
 class AccessControlController extends Controller
 {
     public function findAll(){
-
         return response(AccessControl::all(),200);
     }
     public function add(Request $request){
@@ -48,6 +49,7 @@ class AccessControlController extends Controller
                 "name" => "required|string",
                 "description" => "required|string"
             ]);
+
 
             $accessControl = AccessControl::query()->findOrFail($input["id"]);
 

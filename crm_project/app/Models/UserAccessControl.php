@@ -14,7 +14,7 @@ class UserAccessControl extends Model
 
     protected $table = "user_access_control";
 
-    protected $with = ["users","access_control"];
+    protected $with = ["user","accessControl"];
     protected $fillable = ["id","name","description","created_at","updated_at","user_id","access_control_id"];
 
     public function user(): BelongsTo
