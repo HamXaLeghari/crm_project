@@ -10,15 +10,14 @@ class AccessControl extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = "access_control_id";
     protected $connection = "pgsql";
     protected $table = "access_control";
 
-    protected $with = ["userAccessControls"];
+    protected $fillable = ["access_control_id","name","description","created_at","updated_at"];
 
-    protected $fillable = ["id","name","description","created_at","updated_at"];
-
-    public function userAccessControls(): HasMany
+    public function userAccessControls()
     {
-        return $this->hasMany(AccessControl::class);
+       return $this->hasMany(AccessControl::class);
     }
 }

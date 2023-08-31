@@ -27,7 +27,7 @@ class UserAccessControlController extends Controller
         }
 
         catch (ModelNotFoundException|Exception $exception){
-            return response(["message"=> $exception->getMessage()],200);
+            return response(["message"=> $exception->getMessage()],400);
         }
     }
 

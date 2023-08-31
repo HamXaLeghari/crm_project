@@ -35,9 +35,14 @@ Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
 
     Route::get("/current-user",[UserController::class,"currentUser"]);
 
+    Route::post("/user/add",[UserController::class,"addUser"]);
+
     Route::get("/logout",[UserController::class,"logout"]);
 
     Route::get("/role",[RoleController::class,"findAll"]);
+
+    Route::post("/role/name",[RoleController::class,"findByName"]);
+    Route::post("/role/id",[RoleController::class,"findById"]);
         //->middleware("verify.access:role_read");
 
     Route::post("/role/add",[RoleController::class,"add"]);
@@ -114,5 +119,3 @@ Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
 
     Route::post('/category/delete/{id}', [CategoryController::class, 'delete']);
 });
-
-

@@ -10,6 +10,7 @@ class UserAccessControl extends Model
 {
     use HasFactory;
 
+
     protected $connection = "pgsql";
 
     protected $table = "user_access_control";

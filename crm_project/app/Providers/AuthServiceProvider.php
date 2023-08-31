@@ -44,7 +44,7 @@ class AuthServiceProvider extends ServiceProvider
 
             return $user
                 ->userAccessControls()
-                ->getRelation("access_control")
+                ->getRelation("accessControl")
                 ->where("name","=",$access_control)
                 ->exists();
         });

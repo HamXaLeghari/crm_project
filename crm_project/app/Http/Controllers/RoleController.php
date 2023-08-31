@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Exception;
-use Faker\Provider\en_IN\Internet;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -15,6 +14,33 @@ class RoleController extends Controller
     public function findAll(){
 
         return response(Role::all(),200);
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function findByName(Request $request){
+
+       $input = $this->validate($request,[
+            "name"=>"required|string"
+        ]);
+
+        $role = Role::query()->select()->where("role.name","=",$input["name"]);
+
+        if ($role->exists()) {return response($role->get(), 200);}
+
+        return response("Resource Not Found",404);
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function findById(Request $request){
+
+        $input = $this->validate($request,[
+            "id"=>"required|numeric"
+        ]);
+        return response(Role::query()->findOrFail($input["id"]),404);
     }
    public function add(Request $request){
 
