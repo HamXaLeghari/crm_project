@@ -72,13 +72,11 @@ class AccessControlController extends Controller
         try {
             $input = $this->validate($request, ["id"=>"required|numeric"]);
 
-            $accessControl = new AccessControl();
+            $accessControl = AccessControl::query()->findOrFail($input["id"]);
 
-            $accessControl->fill($input);
+            $accessControl->delete();
 
-            $accessControl->save();
-
-            return response(["message"=>"Entity Deletion Successful"],201);
+            return response(["message"=>"Entity Deletion Successful"],200);
         }
 
         catch (ValidationException|Exception $exception){
