@@ -42,6 +42,7 @@ Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
     Route::get("/role",[RoleController::class,"findAll"]);
 
     Route::post("/role/name",[RoleController::class,"findByName"]);
+
     Route::post("/role/id",[RoleController::class,"findById"]);
         //->middleware("verify.access:role_read");
 

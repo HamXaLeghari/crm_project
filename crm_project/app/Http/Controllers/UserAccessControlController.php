@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccessControl;
+use App\Models\User;
 use App\Models\UserAccessControl;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -34,13 +36,17 @@ class UserAccessControlController extends Controller
     public function assign(Request $request){
 
         try {
-            $input = $this->validate($request, ["access_control_id" => "required|numeric"]);
+            $input = $this->validate($request, [
+                "access_control_id" => "required|numeric",
+                "user_id"=>"required|numeric"
+            ]);
+
+            AccessControl::query()->findOrFail($input["access_control_id"]);
+            User::query()->findOrFail($input["user_id"]);
 
             $userAccessControl = new UserAccessControl();
 
             $userAccessControl->fill($input);
-
-            $userAccessControl->user_id = Auth::id();
 
             $userAccessControl->save();
 

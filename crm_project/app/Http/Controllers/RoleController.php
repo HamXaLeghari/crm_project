@@ -97,13 +97,11 @@ class RoleController extends Controller
         try {
             $input = $this->validate($request, ["id"=>"required|numeric"]);
 
-            $role = new Role();
+            $role = Role::query()->findOrFail($input["id"]);
 
-            $role->fill($input);
+           $role->delete();
 
-            $role->save();
-
-            return response(["message"=>"Entity Deletion Successful"],201);
+            return response(["message"=>"Entity Deletion Successful"],200);
         }
 
         catch (ValidationException|Exception $exception){
