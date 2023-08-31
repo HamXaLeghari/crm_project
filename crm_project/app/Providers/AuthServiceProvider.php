@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Gate;
 use function Symfony\Component\String\u;
 

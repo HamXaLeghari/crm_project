@@ -26,45 +26,48 @@ Route::post("/signup",[UserController::class,"signup"]);
 
 Route::post("/login",[UserController::class,"login"]);
 
-Route::get("/current-user",[UserController::class,"currentUser"])->middleware('auth:api');
 
-
+Route::post("/logout",[UserController::class,"logout"]);
 
 Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
 
-    Route::get("/role",[RoleController::class,"findAll"])
-        ->middleware("verify.access:role_read");
+    Route::get("/current-user",[UserController::class,"currentUser"]);
 
-    Route::post("/role/add",[RoleController::class,"add"])
-        ->middleware("verify.access:role_add");
+    Route::get("/logout",[UserController::class,"logout"]);
 
-    Route::put("/role/update",[RoleController::class,"update"])
-        ->middleware("verify.access:role_update");
+    Route::get("/role",[RoleController::class,"findAll"]);
+        //->middleware("verify.access:role_read");
 
-    Route::delete("/role/delete",[RoleController::class,"delete"])
-        ->middleware("verify.access:role_delete");
+    Route::post("/role/add",[RoleController::class,"add"]);
+        //->middleware("verify.access:role_add");
 
+    Route::put("/role/update",[RoleController::class,"update"]);
+       // ->middleware("verify.access:role_update");
 
-    Route::get("/access",[AccessControlController::class,"findAll"])
-        ->middleware("verify.access:access_read");
+    Route::delete("/role/delete",[RoleController::class,"delete"]);
+        //->middleware("verify.access:role_delete");
 
-    Route::post("/access/add",[AccessControlController::class,"add"])
-        ->middleware("verify.access:access_add");
+    Route::get("/access",[AccessControlController::class,"findAll"]);
+        //->middleware("verify.access:access_read");
 
-    Route::put("/access/update",[AccessControlController::class,"update"])
-        ->middleware("verify.access:access_update");
+    Route::post("/access/add",[AccessControlController::class,"add"]);
+       // ->middleware("verify.access:access_add");
 
-    Route::delete("/access/delete",[AccessControlController::class,"delete"])
-        ->middleware("verify.access:access_delete");
+    Route::put("/access/update",[AccessControlController::class,"update"]);
+        //->middleware("verify.access:access_update");
+
+    Route::delete("/access/delete",[AccessControlController::class,"delete"]);
+       // ->middleware("verify.access:access_delete");
 
     Route::post("/user-access/assign",[UserAccessControlController::class,"assign"]);
         //->middleware("verify.access:user_access_add");
 
     Route::delete("/user-access/unassign",[UserAccessControlController::class,"unassign"]);
        // ->middleware("verify.access:user_access_delete");
-});
 
-Route::middleware(['verify.role:root,user','auth:api'])->group(function (){
-   // add company, service,article, etc routes here
-});
+    Route::get("/user-access",[UserAccessControlController::class,"findAll"]);
+      //  ->middleware("verify.access:user_access_read");
 
+    Route::get("/user-access/user",[UserAccessControlController::class,"findByCurrentUser"]);
+       // ->middleware("verify.access:user_access_read");
+});

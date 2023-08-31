@@ -16,7 +16,7 @@ class UserAccessControlController extends Controller
         return response(UserAccessControl::all(),200);
     }
 
-    public function findByUser(){
+    public function findByCurrentUser(){
         try {
             $uacl = UserAccessControl::query()
                 ->where("user_id","=",Auth::id())

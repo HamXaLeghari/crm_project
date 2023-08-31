@@ -89,6 +89,24 @@ class UserController extends Controller
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 
+    public function logout()
+    {
+        try {
+            $user = Auth::user();
+
+            $user->token()->delete();
+
+            Auth::logout();
+
+            return response(["message"=>"logout Successful",200]);
+
+        }
+
+        catch (Exception $exception){
+            return response()->json(['message' => $exception->getMessage()], 400);
+        }
+    }
+
     public function currentUser()
     {
         if (Auth::check()){
