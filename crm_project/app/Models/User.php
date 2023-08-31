@@ -4,13 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use \Laravel\Passport\HasApiTokens, HasFactory, Notifiable;
+
+    protected $connection = "pgsql";
 
     /**
      * The attributes that are mass assignable.
@@ -18,10 +22,21 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        "id",
+        'first_name',
+        "last_name",
+        "age",
         'email',
+        "phone",
+        "profile_image",
+        "bio",
+        "description",
         'password',
+       // "is_locked",
+        "role_id"
     ];
+
+    protected $with = ["role"];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,4 +56,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userAccessControls(): HasMany
+    {
+        return $this->hasMany(UserAccessControl::class);
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class,"role_id");
+    }
+
+
 }
