@@ -35,6 +35,15 @@ class User extends Authenticatable
        // "is_locked",
         "role_id"
     ];
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
+
+    public function communities()
+    {
+        return $this->hasMany(Community::class);
+    }
 
     protected $with = ["role"];
 
