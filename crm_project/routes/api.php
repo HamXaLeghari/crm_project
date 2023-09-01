@@ -30,9 +30,15 @@ Route::post("/signup",[UserController::class,"signup"]);
 
 Route::post("/login",[UserController::class,"login"]);
 
+
+
 Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
 
     Route::get("/current-user",[UserController::class,"currentUser"]);
+
+    Route::get("/users",[UserController::class,"findAll"]);
+
+    Route::post("/users/id",[UserController::class,"findById"]);
 
     Route::post("/user/update",[UserController::class,"updateUser"]);
 
@@ -69,6 +75,7 @@ Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
 
     Route::delete("/access/delete",[AccessControlController::class,"delete"]);
        // ->middleware("verify.access:access_delete");
+
 
     Route::post("/user-access/assign",[UserAccessControlController::class,"assign"]);
         //->middleware("verify.access:user_access_add");

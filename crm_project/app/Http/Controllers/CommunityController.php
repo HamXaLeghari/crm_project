@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Community;
-use App\Http\Controllers\Auth;
+
+use Illuminate\Support\Facades\Auth;
 
 class CommunityController extends Controller
 {

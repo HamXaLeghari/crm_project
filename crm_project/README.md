@@ -27,13 +27,13 @@ Users can manage their profiles upon signup.
 
 ## API Endpoints
 
-Authentication
+### Authentication
 
 POST /api/signup: Register a new user.
 
 POST /api/login: Log in and receive an access token.
 
-Authenticated Routes (Root User/Owner)
+### Authenticated Routes (Root User/Owner)
 
 GET /api/current-user: Get information about the current user.
 
@@ -41,7 +41,7 @@ POST /api/user/add: Add a new user.
 
 GET /api/logout: Log out the current user.
 
-Role Management
+### Role Management
 
 GET /api/role: List all roles.
 
@@ -55,7 +55,7 @@ PUT /api/role/update: Update a role.
 
 DELETE /api/role/delete: Delete a role.
 
-Access Control
+### Access Control
 
 GET /api/access: List all access controls.
 
@@ -65,7 +65,7 @@ PUT /api/access/update: Update an access control.
 
 DELETE /api/access/delete: Delete an access control.
 
-Service and Community Management
+### Service and Community Management
 
 GET /api/services: List all services.
 
@@ -83,7 +83,7 @@ POST /api/community/update/{id}: Update a community.
 
 POST /api/community/delete/{id}: Delete a community.
 
-Blog Post Management
+### Blog Post Management
 
 GET /api/blogs: List all blog posts.
 
@@ -95,7 +95,7 @@ POST /api/blog/delete/{id}: Delete a blog post.
 
 POST /api/showbycategory/{id}: Show blog posts by category.
 
-Category Management
+### Category Management
 
 GET /api/categories: List all categories.
 

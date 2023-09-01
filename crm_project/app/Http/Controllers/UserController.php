@@ -19,6 +19,16 @@ use Illuminate\Validation\ValidationException;
 class UserController extends Controller
 {
 
+    public function findById(Request $request){
+
+        $input = $this->validate($request,[
+           "id"=>"required|numeric"
+        ]);
+        return response(User::query()->findOrFail($input["id"]),200);
+    }
+    public function findAll(){
+        return response(User::all(),200);
+    }
     public function deleteUser(Request $request){
 
         try {
@@ -77,7 +87,7 @@ class UserController extends Controller
             //$user->is_locked = false;
             $user->save();
 
-            $user->profile_image = url($user->profile_image);
+          //  $user->profile_image = url($user->profile_image);
 
 
            // $token = $user->createToken("Bearer")->accessToken;
