@@ -11,7 +11,7 @@ use App\Http\Controllers\UserAccessControlController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CommunityMembersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -119,4 +119,19 @@ Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
     Route::post('/category/update/{id}', [CategoryController::class, 'update']);
 
     Route::post('/category/delete/{id}', [CategoryController::class, 'delete']);
+
+
+
+    Route::get('/show/members', [CommunityMembersController::class, 'findAllMembers']);
+
+    Route::post('/add/member/community', [CommunityMembersController::class, 'add']);
+
+    Route::post('/member/update/{id}', [CommunityMembersController::class, 'update']);
+
+    Route::post('/member/delete/{id}', [CommunityMembersController::class, 'delete']);
+
+
+
+
+
 });
