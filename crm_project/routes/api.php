@@ -34,6 +34,8 @@ Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
 
     Route::get("/current-user",[UserController::class,"currentUser"]);
 
+    Route::post("/user/update",[UserController::class,"updateUser"]);
+
     Route::post("/user/add",[UserController::class,"addUser"]);
 
     Route::delete("/user/delete",[UserController::class,"deleteUser"]);

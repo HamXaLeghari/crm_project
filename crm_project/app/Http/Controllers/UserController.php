@@ -6,11 +6,13 @@ use App\Models\Role;
 use App\Models\User;
 
 use Exception;
+use http\Env\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 
 
@@ -89,6 +91,42 @@ class UserController extends Controller
             return response(["message"=>$exception->getMessage()],400);
         }
     }
+
+    public  function updateUser(Request $request){
+
+        try{
+            $input = $this->validate($request, [
+                "id"=>"required|numeric",
+                'first_name' => "required|string",
+                "last_name" => "required|string",
+                "age" => "required|numeric",
+               // 'email' => "required|string",
+                "phone" => "required|string",
+                //"profile_image" => "sometimes|image|mimes:jpg,jpeg,png",
+                "bio" => "required|string",
+                "description" => "required|string",
+              //  'password' => "required|string|min:6",
+                // "role_id" => "required|numeric"
+            ]);
+
+            $user = User::query()->findOrFail($input["id"]);
+
+            $user->fill($input);
+
+            $user->save();
+
+            return response(["message"=>" Entity Updation Successful"],200);
+
+        }
+
+        catch (UnauthorizedException|ValidationException|ModelNotFoundException $exception){
+
+            return response(["message"=>$exception->getMessage()],400);
+
+        }
+    }
+
+
     public function signup(Request $request){
 
         try {
@@ -106,7 +144,7 @@ class UserController extends Controller
             ]);
 
             $user = new User();
-            $image_path = $this->saveProfileImage($request, $input);
+            $image_path = User::saveProfileImage($request, $input);
 
             $user->profile_image = Storage::url($image_path);
 
@@ -174,25 +212,4 @@ class UserController extends Controller
         return response()->json(['message' => 'Entity Not Found'], 404);
     }
 
-    /**
-     * @param Request $request
-     * @param array $input
-     * @return bool|string
-     */
-    public function saveProfileImage(Request $request, array &$input): bool|string
-    {
-        //   $role = Role::query()->select()->where("name","=","root")->get();
-
-        if (!Storage::disk('public')->exists("/profile_images")) {
-            Storage::disk('public')->makeDirectory("/profile_images");
-        }
-
-        $image_path = "";
-
-        if ($request->exists("profile_image")) {
-            $image_path = Storage::disk('public')->put("/profile_images", $input["profile_image"], 'public');
-            unset($input["profile_image"]);
-        }
-        return $image_path;
-    }
 }
