@@ -4,18 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
-use Dotenv\Exception\ValidationException;
+
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use function Symfony\Component\String\u;
+use Illuminate\Validation\ValidationException;
 
 
 class UserController extends Controller
 {
+
+    public function deleteUser(Request $request){
+
+        try {
+
+            $input = $this->validate($request, [
+                "user_id" => "required|numeric"
+            ]);
+
+            $user = User::query()->findOrFail($input["id"]);
+
+            $user->delete();
+
+            return response(["message"=>"Entity Deletion Successful"],200);
+        }
+
+        catch (ValidationException|ModelNotFoundException|Exception $exception){
+
+            return response(["message"=>$exception->getMessage()],400);
+        }
+
+    }
 
     public function addUser(Request $request){
         try {
@@ -84,19 +106,9 @@ class UserController extends Controller
             ]);
 
             $user = new User();
-         //   $role = Role::query()->select()->where("name","=","root")->get();
+            $image_path = $this->saveProfileImage($request, $input);
 
-            if (!Storage::disk('public')->exists("/profile_images")){
-                Storage::disk('public')->makeDirectory("/profile_images");
-            }
-
-            $image_path = "";
-
-            if ($request->exists("profile_image")){
-                $image_path = Storage::disk('public')->put("/profile_images",$input["profile_image"],'public');
-                unset($input["profile_image"]);
-                $user->profile_image = Storage::url($image_path);
-            }
+            $user->profile_image = Storage::url($image_path);
 
 
             $input["role_id"] = 2;
@@ -105,9 +117,6 @@ class UserController extends Controller
             $user->password = Hash::make($input['password']);
             //$user->is_locked = false;
             $user->save();
-
-            $user->profile_image = url($user->profile_image);
-
 
            $token = $user->createToken("Bearer")->accessToken;
 
@@ -132,7 +141,7 @@ class UserController extends Controller
 
             $token = $user->createToken("Bearer")->accessToken;
 
-            $user->profile_image = url($user->profile_image);
+           // $user->profile_image = url($user->profile_image);
 
             return response(["user"=>$user,"Bearer"=>$token],200);
         }
@@ -159,12 +168,31 @@ class UserController extends Controller
     public function currentUser()
     {
         if (Auth::check()){
-            return response(["User"=>Auth::user()],200);
+            return response(Array(Auth::user()),200);
         }
 
         return response()->json(['message' => 'Entity Not Found'], 404);
     }
 
+    /**
+     * @param Request $request
+     * @param array $input
+     * @return bool|string
+     */
+    public function saveProfileImage(Request $request, array &$input): bool|string
+    {
+        //   $role = Role::query()->select()->where("name","=","root")->get();
 
+        if (!Storage::disk('public')->exists("/profile_images")) {
+            Storage::disk('public')->makeDirectory("/profile_images");
+        }
 
+        $image_path = "";
+
+        if ($request->exists("profile_image")) {
+            $image_path = Storage::disk('public')->put("/profile_images", $input["profile_image"], 'public');
+            unset($input["profile_image"]);
+        }
+        return $image_path;
+    }
 }

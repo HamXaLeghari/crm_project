@@ -9,7 +9,6 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserAccessControlController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommunityMembersController;
 /*
@@ -36,6 +35,8 @@ Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
     Route::get("/current-user",[UserController::class,"currentUser"]);
 
     Route::post("/user/add",[UserController::class,"addUser"]);
+
+    Route::delete("/user/delete",[UserController::class,"deleteUser"]);
 
     Route::get("/logout",[UserController::class,"logout"]);
 

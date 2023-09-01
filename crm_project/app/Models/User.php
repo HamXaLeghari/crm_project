@@ -35,6 +35,10 @@ class User extends Authenticatable
        // "is_locked",
         "role_id"
     ];
+
+    public function getProfileImageAttribute($value){
+        return url($value);
+    }
     public function blogs()
     {
         return $this->hasMany(Blog::class);

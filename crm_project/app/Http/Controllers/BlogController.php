@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
-use App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 
 class BlogController extends Controller
@@ -27,8 +27,8 @@ class BlogController extends Controller
                 'Title' => $request->input('Title'),
                 'Content' => $request->input('Content'),
                 'Description' => $request->input('Description'),
- //               'user_id' => Auth::id(), // Assuming you're using Laravel's built-in authentication, required syntax
-                'user_id' => 1,
+                'user_id' => Auth::id(), // Assuming you're using Laravel's built-in authentication, required syntax
+               // 'user_id' => 1,
                 'category_id'=> $id
             ]);
             $blog->save();
@@ -36,7 +36,7 @@ class BlogController extends Controller
         }
         catch (\Exception $exception){
 
-            return response()->json(["message"=>$exception->getMessage()],401);
+            return response()->json(["message"=>$exception->getMessage()],400);
         }
     }
 
