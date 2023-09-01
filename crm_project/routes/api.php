@@ -7,6 +7,7 @@ use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Com_SerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommunityMembersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -69,3 +70,11 @@ Route::post('/category/update/{id}', [CategoryController::class, 'update']);
 Route::post('/category/delete/{id}', [CategoryController::class, 'delete']);
 
 
+
+Route::get('/show/members', [CommunityMembersController::class, 'findAllMembers']);
+
+Route::post('/add/member/community', [CommunityMembersController::class, 'add']);
+
+Route::post('/member/update/{id}', [CommunityMembersController::class, 'update']);
+
+Route::post('/member/delete/{id}', [CommunityMembersController::class, 'delete']);
