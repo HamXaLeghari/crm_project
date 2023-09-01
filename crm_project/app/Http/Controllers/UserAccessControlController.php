@@ -33,6 +33,27 @@ class UserAccessControlController extends Controller
         }
     }
 
+    public function findByUserId(Request $request){
+
+        try {
+
+            $input = $this->validate($request,["user_id"=>"required|numeric"]);
+
+            $uacl = UserAccessControl::query()
+                ->where("user_id","=",$input["user_id"])
+                ->with(["user","accessControl"])
+                ->get();
+
+            return response($uacl,200);
+        }
+
+        catch (ModelNotFoundException|Exception $exception){
+            return response(["message"=> $exception->getMessage()],400);
+        }
+    }
+
+
+
     public function assign(Request $request){
 
         try {

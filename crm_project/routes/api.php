@@ -83,6 +83,8 @@ Route::middleware(['verify.role:root,admin','auth:api'])->group(function (){
     Route::delete("/user-access/unassign",[UserAccessControlController::class,"unassign"]);
        // ->middleware("verify.access:user_access_delete");
 
+    Route::post("/user-access/user/id",[UserAccessControlController::class,"findByUserId"]);
+
     Route::get("/user-access",[UserAccessControlController::class,"findAll"]);
       //  ->middleware("verify.access:user_access_read");
 
